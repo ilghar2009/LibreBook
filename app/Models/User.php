@@ -17,7 +17,6 @@ class User extends Authenticatable
         'name',
         'nickname',
         'password',
-        'telegram_id',
     ];
 
     protected static function boot()
