@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('blogs', function (Blueprint $table) {
-            $table->id();
+            $table->string('blog_id');
+            $table->string('user_id');
+            $table->integer('age');
+            $table->text('meta_title')->nullable();
+            $table->longText('meta_description')->nullable();
+            $table->string('pdf_file')->nullable();
+            $table->longText('contents')->nullable();
+            //author_claim, valid, invalid
+            $table->string('role')->default('author_claim');
             $table->timestamps();
         });
     }
