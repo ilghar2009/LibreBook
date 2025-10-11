@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tokens', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
-            $table->string('token');
+            $table->string('user_id')->unique();
+            $table->string('token')->unique();
             $table->timestamps('expire_time');
             $table->timestamps();
         });
