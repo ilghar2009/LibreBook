@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Token;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -27,6 +31,45 @@ class AuthController extends Controller
         return response()->json([
             'user' => $user,
             'message' => 'user created successfully',
+        ], 201);
+    }
+
+    //login user -> send token auth
+    public function login(Request $request)
+    {
+        $request->validate([
+            'nickname' => ['required', 'string'],
+            'password' => ['required'],
+        ]);
+
+        $ch_user = $request->only('nickname', 'password');
+
+        //login user
+            if(!auth()->attempt($ch_user)) {
+                return response()->json([
+                    'error' => 'Invalid credentials.',
+                ], 401);
+            }
+
+            $user = Auth::user();
+
+            //check user token
+                if($user->token)
+                    $user->token->delete();
+
+        // create token and send;
+            $token = Str::random(70);
+
+            Token::create([
+                'token' => Hash::make($token),
+                'user_id' => $user->user_id,
+                'expire_time' => Carbon::now()->addMinute(30),
+            ]);
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+            'token_type' => 'Bearer',
         ], 201);
     }
 }
