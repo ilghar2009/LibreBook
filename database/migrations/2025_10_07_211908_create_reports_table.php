@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->string('user_id');
+            $table->string('blog_id');
+            $table->string('explanation');
             $table->timestamps();
         });
     }
