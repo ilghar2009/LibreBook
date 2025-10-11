@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -29,4 +30,25 @@ class User extends Authenticatable
             }
         });
     }
+
+    public function categories(): HasMany
+    {
+        return $this->hasmany(Category::class, 'user_id');
+    }
+
+    public function blogs(): HasMany
+    {
+        return $this->hasmany(Blog::class, 'user_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasmany(Comment::class, 'user_id');
+    }
+
+    public function reports(): HasMany
+    {
+        return $this->hasmany(Report::class, 'user_id');
+    }
+
 }
