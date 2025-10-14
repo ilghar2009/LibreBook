@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
@@ -32,7 +33,7 @@ class Category extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
-    public function blogs(): HasMany{
-        return $this->hasMany(Blog::class, 'category_id');
+    public function blogs(): BelongsToMany{
+        return $this->belongsToMany(Category_conn::class,'category_conn','category_id','category_id');
     }
 }
