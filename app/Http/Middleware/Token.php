@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,20 @@ class Token
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        //get token
+            $token_c = $request->bearerToken();
+
+            if($token_c) {
+                $token = \App\Models\Token::where('token', $token_c)->first();
+
+                if ($token)
+                    if ($token->user->name && $token->expire_time > Carbon::now()->toDateTimeString()) {
+                        return $next($request);
+                    }
+            }
+
+        return response()->json([
+            'error' => 'Token is required.',
+        ], 401);
     }
 }
