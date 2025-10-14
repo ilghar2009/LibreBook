@@ -52,20 +52,28 @@ class CategoryController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Category $category)
     {
-        //
+        //validate requests
+            $request->validate([
+                'title' => ['sometimes', 'unique:categories,title'.$category->category_id],
+                'description' => 'sometimes',
+            ]);
+
+        //get token
+            $token_c = $request->bearerToken();
+            $token = Token::where('token', $token_c)->first();
+
+            $user = $token->user;
+
+        //update category
+            $category->update($request->all());
+
+        return response()->json([
+            'message' => 'category update successfully',
+            'category' => $category,
+        ], 200);
     }
 
     /**
