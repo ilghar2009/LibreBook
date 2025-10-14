@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Token;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -15,17 +16,32 @@ class CategoryController extends Controller
         //
     }
 
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        //validate
+            $request->validate([
+                'title' => 'required',
+                'description' => 'required',
+            ]);
+
+        //get token then get user
+            $token_c = $request->bearerToken();
+            $token = Token::where('token', $token_c)->first();
+
+            $user = $token->user;
+
+        //create new recorde
+            $category = new Category();
+            $category->title = $request->title;
+            $category->description = $request->description;
+            $category->user_id = $user->user_id;
+            $category->save();
+
+        return response()->json([
+            'message' => 'category create successfully',
+            'category' => $category,
+        ], 201);
     }
 
     /**
