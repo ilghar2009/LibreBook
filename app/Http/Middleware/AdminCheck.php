@@ -15,6 +15,19 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        $token_c = $request->bearerToken();
+        $token = \App\Models\Token::where('token', $token_c)->first();
+
+        if(!$token)
+            return response()->json([
+                    'error' => 'Unauthorized',
+                ], 401);
+
+        if($token?->user->is_admin)
+            return $next($request);
+
+        return response()->json([
+            'error' => 'Forbidden',
+        ], 403);
     }
 }
