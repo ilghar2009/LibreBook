@@ -63,7 +63,6 @@ class AuthController extends Controller
             Token::create([
                 'token' => Hash::make($token),
                 'user_id' => $user->user_id,
-                'expire_time' => Carbon::now()->addMinute(30),
             ]);
 
         return response()->json([
