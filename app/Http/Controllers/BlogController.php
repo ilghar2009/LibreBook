@@ -26,6 +26,8 @@ class BlogController extends Controller
             $token = Token::where('token', $token_c)->first();
 
             $user = $token->user;
+
+
     }
 
     /**

@@ -24,4 +24,5 @@ class Token extends Model
             $token->expire_time = now()->addMinutes(30);
         });
     }
+
 }

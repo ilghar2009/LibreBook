@@ -19,6 +19,8 @@ class User extends Authenticatable
         'name',
         'nickname',
         'password',
+        'is_admin',
+        'is_active',
     ];
 
     protected static function boot()
