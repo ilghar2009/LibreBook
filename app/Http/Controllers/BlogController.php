@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\Token;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -33,16 +34,37 @@ class BlogController extends Controller
                    'error' => 'Forbidden',
                 ], 403);
 
-//        $blog = Blog::creating([
-//            'category_id' => $request->category_id,
-//            'meta_title' => $request->title,
-//            'meta_description' => $request->description,
-//            'user_id' => $user->user_id,
-//            'age' => $request->age,
-//            'pdf_file' => ,
-//            'contents',
-//            'role' =>,
-//        ]);
+        //Check request's
+            $request->validate([
+                'category_id' => 'required',
+                'title' => 'required',
+                'description' => 'required',
+                'age' => ['required', 'integer', 'min:1'],
+                'pdf' => ['sometimes', 'mimes:pdf', 'max:2048'],
+                'contents' => ['sometimes', 'string'],
+            ]);
+
+        //Upload PDF
+            $path = $request->file('pdf')->store('public', 'pdf');
+
+        //get url
+            $url = Storage::disk('public')->url($path);
+
+        //create new recorde
+            $blog = Blog::create([
+                'category_id' => $request->category_id,
+                'meta_title' => $request->title,
+                'meta_description' => $request->description,
+                'user_id' => $user->user_id,
+                'age' => $request->age,
+                'pdf_file' => $url??null,
+                'contents' => $request->contents??null,
+            ]);
+
+        return response()->json([
+            'blog' => $blog,
+            "message" => 'successfully create new recorde',
+        ], 201);
     }
 
     /**
