@@ -52,6 +52,11 @@ class CategoryController extends Controller
      */
     public function show()
     {
+        $categories = Category::all()->take(10);
+
+        return response()->json([
+           'categories' => $categories,
+        ], 200);
     }
 
 
