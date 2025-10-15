@@ -13,9 +13,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $categories = Category::all();
 
+        return response()->json([
+            'categories' => $categories,
+        ], 200);
+    }
 
     public function store(Request $request)
     {
@@ -45,11 +48,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * show category in home page.
      */
-    public function show(Category $category)
+    public function show()
     {
-        //
     }
 
 
