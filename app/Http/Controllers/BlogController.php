@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Token;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -16,19 +17,15 @@ class BlogController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        //get token and then user
+            $token_c = $request->bearerToken();
+            $token = Token::where('token', $token_c)->first();
+
+            $user = $token->user;
     }
 
     /**
