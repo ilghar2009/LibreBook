@@ -76,19 +76,35 @@ class BlogController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Blog $blog)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Blog $blog)
     {
-        //
+        //Get token and then user
+            $token_c = $request->bearerToken();
+            $token = Token::where('token', $token_c)->first();
+
+            $user = $token->user;
+
+        //check user available
+            if(!$token->is_activity)
+                return response()->json([
+                    'error' => 'Forbidden',
+                ], 403);
+            if($blog->user_id === $user->user_id){
+
+                //check validation request
+                    $request->validate([
+                        'category_id' => 'sometimes',
+                        'title' => 'sometimes',
+                        'description' => 'sometimes',
+                        'age' => ['sometimes', 'integer', 'min:1'],
+                        'pdf' => ['sometimes', 'mimes:pdf', 'max:2048'],
+                        'contents' => ['sometimes', 'string'],
+                    ]);
+
+
+            }
     }
 
     /**
