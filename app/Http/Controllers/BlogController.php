@@ -43,12 +43,14 @@ class BlogController extends Controller
                 'pdf' => ['sometimes', 'mimes:pdf', 'max:2048'],
                 'contents' => ['sometimes', 'string'],
             ]);
+        //if file exist upload
+            if($request->file('pdf')->getSize()) {
+                //Upload PDF
+                $path = $request->file('pdf')->store('public', 'pdf');
 
-        //Upload PDF
-            $path = $request->file('pdf')->store('public', 'pdf');
-
-        //get url
-            $url = Storage::disk('public')->url($path);
+                //get url
+                $url = Storage::disk('public')->url($path);
+            }
 
         //create new recorde
             $blog = Blog::create([
