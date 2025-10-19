@@ -133,8 +133,28 @@ class BlogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blog $blog)
+    public function destroy(Blog $blog, Request $request)
     {
-        //
+        //get token and then get user
+            $token_c = $request->bearerToken();
+            $token = Token::where('token', $token_c)->first();
+
+            $user = $token->user;
+
+        if(!$token->is_activity)
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
+
+        if($blog->user_id === $user->user_id){
+            $blog->delete();
+            return response()->json([
+                'message' => 'successfully deleted recorde',
+            ], 200);
+        }
+
+        return response()->json([
+            'error' => 'Forbidden',
+        ], 403);
     }
 }
