@@ -36,7 +36,7 @@ class BlogController extends Controller
 
         //Check request's
             $request->validate([
-                'category_id' => 'required',
+                'categories' => ['required', 'array'],
                 'title' => 'required',
                 'description' => 'required',
                 'age' => ['required', 'integer', 'min:1'],
@@ -55,7 +55,6 @@ class BlogController extends Controller
 
         //create new recorde
             $blog = Blog::create([
-                'category_id' => $request->category_id,
                 'meta_title' => $request->title,
                 'meta_description' => $request->description,
                 'user_id' => $user->user_id,
@@ -63,6 +62,9 @@ class BlogController extends Controller
                 'pdf_file' => $url??null,
                 'contents' => $request->contents??null,
             ]);
+
+        //category relationships
+            $blog->categories()->syncWithoutDetaching($request->categories);
 
         return response()->json([
             'blog' => $blog,
