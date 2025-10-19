@@ -43,6 +43,7 @@ class BlogController extends Controller
                 'pdf' => ['sometimes', 'mimes:pdf', 'max:2048'],
                 'contents' => ['sometimes', 'string'],
             ]);
+
         //if file exist upload
             if($request->file('pdf')->getSize()) {
                 //Upload PDF
@@ -93,6 +94,7 @@ class BlogController extends Controller
                 return response()->json([
                     'error' => 'Forbidden',
                 ], 403);
+
             if($blog->user_id === $user->user_id){
 
                 //check validation request
@@ -105,6 +107,15 @@ class BlogController extends Controller
                         'contents' => ['sometimes', 'string'],
                     ]);
 
+                //update this blog
+                    $blog->update([
+                        'meta_title' => $request->title,
+                        'meta_description' => $request->description,
+                        'user_id' => $user->user_id,
+                        'age' => $request->age,
+                        'pdf_file' => $url??null,
+                        'contents' => $request->contents??null,
+                    ]);
 
             }
     }
