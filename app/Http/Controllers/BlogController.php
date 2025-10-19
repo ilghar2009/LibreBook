@@ -101,7 +101,7 @@ class BlogController extends Controller
 
                 //check validation request
                     $request->validate([
-                        'category_id' => 'sometimes',
+                        'categories' => ['sometimes', 'array'],
                         'title' => 'sometimes',
                         'description' => 'sometimes',
                         'age' => ['sometimes', 'integer', 'min:1'],
@@ -119,6 +119,14 @@ class BlogController extends Controller
                         'contents' => $request->contents??null,
                     ]);
 
+                //Category relationships
+                    if(isset($request->categories))
+                        $blog->categories()->syncWithoutDetaching($request->categories);
+
+                return response()->json([
+                    'blog' => $blog,
+                    'message' => 'successfully updated recorde',
+                ], 200);
             }
     }
 
