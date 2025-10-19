@@ -22,7 +22,16 @@ class AuthController extends Controller
             'password' => ['required', Password::min(8)->letters()->symbols()->numbers()],
         ]);
 
+        //check user ip
+            $c_i = User::where('user_ip', $request->ip())->get();
+
+        if($c_i)
+            return response()->json([
+                'error' => 'with your ip user exist',
+            ], 409);
+
         $user = User::create([
+            'user_ip' => $request->ip(),
             'name' => $request->name,
             'nickname' => $request->nickname,
             'password' => Hash::make($request->password),
