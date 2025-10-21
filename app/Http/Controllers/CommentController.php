@@ -55,20 +55,41 @@ class CommentController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        //get token
+            $token_code = $request->bearerToken();
+            $token = Token::where('token', $token_code)->first();
+
+            $user = $token->user;
+
+        //User Access Check
+            if($user->user_id === $comment->user_id){
+
+                //check request text
+                    $request->validate([
+                        'comment' => ['sometimes', 'min:3', 'max:100'],
+                        'blog_id' => ['sometimes', 'exists:blogs,blog_id'],
+                    ]);
+
+                //update this recorde
+                    $comment->update([
+                        'blog_id' => $request->blog_id??$comment->blog_id,
+                        'comment' => $request->comment??$comment->comment,
+                    ]);
+
+                return response()->json([
+                    'message' => 'Comment updated successfully',
+                ], 200);
+            }
+
+        return response()->json([
+            'error' => 'Forbidden',
+        ], 403);
     }
 
     /**
