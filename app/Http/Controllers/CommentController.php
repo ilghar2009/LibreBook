@@ -95,8 +95,25 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment, Request $request)
     {
-        //
+        //get token
+            $token_code = $request->bearerToken();
+            $token = Token::where('token', $token_code)->first();
+
+            $user = $token->user;
+
+        //User Access Check
+            if($user->user_id === $comment->user_id) {
+                $comment->delete();
+
+                return response()->json([
+                    'message' => 'Comment deleted successfully',
+                ], 200);
+            }
+
+            return response()->json([
+                'error' => 'Forbidden',
+            ], 403);
     }
 }
