@@ -20,16 +20,20 @@ class Token
             $token_c = $request->bearerToken();
 
             if($token_c) {
-                $token = \App\Models\RefreshToken::where('token', $token_c)->first();
+                $token = \App\Models\Access_Token::where('token', $token_c)->first();
 
                 if ($token)
-                    if ($token->user->name && $token->expire_time > Carbon::now()->toDateTimeString()) {
-                        return $next($request);
+                    if ($token->user->name) {
+                        if(now()->greaterThan($token->expired_at)) {
+                            return \response()->json(['message' => 'Token expired'], Response::HTTP_UNAUTHORIZED);
+                        }else{
+                            return $next($request);
+                        }
                     }
             }
 
         return response()->json([
-            'error' => 'RefreshToken is required.',
+            'error' => 'token not found',
         ], 401);
     }
 }
