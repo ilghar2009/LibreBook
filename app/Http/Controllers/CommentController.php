@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access_Token;
 use App\Models\Comment;
 use App\Models\RefreshToken;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class CommentController extends Controller
     {
         //check token
             $token_code = $request->bearerToken();
-            $token = RefreshToken::where('token', $token_code)->first();
+            $token = Access_Token::where('token', $token_code)->first();
 
             $user = $token->user;
 
@@ -63,7 +64,7 @@ class CommentController extends Controller
     {
         //get token
             $token_code = $request->bearerToken();
-            $token = RefreshToken::where('token', $token_code)->first();
+            $token = Access_Token::where('token', $token_code)->first();
 
             $user = $token->user;
 
@@ -99,7 +100,7 @@ class CommentController extends Controller
     {
         //get token
             $token_code = $request->bearerToken();
-            $token = RefreshToken::where('token', $token_code)->first();
+            $token = Access_Token::where('token', $token_code)->first();
 
             $user = $token->user;
 

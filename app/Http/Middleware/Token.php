@@ -21,7 +21,6 @@ class Token
 
             if($token_c) {
                 $token = \App\Models\Access_Token::where('token', $token_c)->first();
-
                 if ($token)
                     if ($token->user->name) {
                         if(now()->greaterThan($token->expired_at)) {

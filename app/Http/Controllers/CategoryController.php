@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access_Token;
 use App\Models\Category;
 use App\Models\RefreshToken;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class CategoryController extends Controller
 
         //get token then get user
             $token_c = $request->bearerToken();
-            $token = RefreshToken::where('token', $token_c)->first();
+            $token = Access_Token::where('token', $token_c)->first();
 
             $user = $token->user;
 
@@ -70,7 +71,7 @@ class CategoryController extends Controller
 
         //get token
             $token_c = $request->bearerToken();
-            $token = RefreshToken::where('token', $token_c)->first();
+            $token = Access_Token::where('token', $token_c)->first();
 
             $user = $token->user;
 
@@ -89,7 +90,7 @@ class CategoryController extends Controller
     public function destroy(Category $category, Request $request)
     {
         $token_c = $request->bearerToken();
-        $token = RefreshToken::where('token', $token_c)->first();
+        $token = Access_Token::where('token', $token_c)->first();
 
         $user = $token->user;
 
