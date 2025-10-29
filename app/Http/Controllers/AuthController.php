@@ -67,16 +67,16 @@ class AuthController extends Controller
                     $user->token->delete();
 
         // create token and send;
-            $token = Str::random(70);
+            $refresh_token = Str::random(70);
 
             RefreshToken::create([
-                'token' => Hash::make($token),
+                'token' => Hash::make($refresh_token),
                 'user_id' => $user->user_id,
             ]);
 
         return response()->json([
             'user' => $user,
-            'token' => $token,
+            'token' => $refresh_token,
             'token_type' => 'Bearer',
         ], 201);
     }
