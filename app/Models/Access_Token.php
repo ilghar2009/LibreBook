@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Access_Token extends Model
 {
@@ -18,5 +19,9 @@ class Access_Token extends Model
         static::creating(function ($model) {
             $model->expire_time = now()->addMinutes(30);
         });
+    }
+
+    public function user():BelongsTo{
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

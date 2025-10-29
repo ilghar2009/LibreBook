@@ -56,4 +56,8 @@ class User extends Authenticatable
     public function refresh_token(): HasOne{
         return $this->hasOne(RefreshToken::class, 'user_id');
     }
+
+    public function access_token(): HasOne{
+        return $this->hasOne(Access_Token::class, 'user_id');
+    }
 }
