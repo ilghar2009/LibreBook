@@ -53,7 +53,7 @@ class User extends Authenticatable
         return $this->hasmany(Report::class, 'user_id');
     }
 
-    public function token(): HasOne{
+    public function refresh_token(): HasOne{
         return $this->hasOne(RefreshToken::class, 'user_id');
     }
 }
