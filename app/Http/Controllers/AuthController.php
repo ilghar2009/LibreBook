@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access_Token;
 use App\Models\RefreshToken;
 use App\Models\User;
 use Carbon\Carbon;
@@ -67,16 +68,28 @@ class AuthController extends Controller
                     $user->token->delete();
 
         // create token and send;
-            $refresh_token = Str::random(70);
 
-            RefreshToken::create([
-                'token' => Hash::make($refresh_token),
-                'user_id' => $user->user_id,
-            ]);
+            //refresh token
+                $refresh_token = Str::random(70);
+
+                RefreshToken::create([
+                    'token' => Hash::make($refresh_token),
+                    'user_id' => $user->user_id,
+                ]);
+
+            //access token
+                $access_token = Str::random(70);
+
+                Access_Token::create([
+                    'token' => Hash::make($access_token),
+                    'user_id' => $user->user_id,
+                ]);
+
 
         return response()->json([
             'user' => $user,
-            'token' => $refresh_token,
+            'access_token' => $access_token,
+            'refresh_token' => $refresh_token,
             'token_type' => 'Bearer',
         ], 201);
     }
