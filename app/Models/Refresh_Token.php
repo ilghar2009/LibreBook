@@ -21,7 +21,7 @@ class RefreshToken extends Model
     {
         parent::boot();
         self::creating(function ($token){
-            $token->expire_time = now()->addMinutes(30);
+            $token->expire_time = now()->addDay(2);
         });
     }
 
