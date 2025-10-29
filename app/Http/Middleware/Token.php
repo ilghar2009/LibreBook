@@ -20,7 +20,7 @@ class Token
             $token_c = $request->bearerToken();
 
             if($token_c) {
-                $token = \App\Models\Token::where('token', $token_c)->first();
+                $token = \App\Models\RefreshToken::where('token', $token_c)->first();
 
                 if ($token)
                     if ($token->user->name && $token->expire_time > Carbon::now()->toDateTimeString()) {
@@ -29,7 +29,7 @@ class Token
             }
 
         return response()->json([
-            'error' => 'Token is required.',
+            'error' => 'RefreshToken is required.',
         ], 401);
     }
 }

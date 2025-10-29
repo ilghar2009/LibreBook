@@ -54,6 +54,6 @@ class User extends Authenticatable
     }
 
     public function token(): HasOne{
-        return $this->hasOne(Token::class, 'user_id');
+        return $this->hasOne(RefreshToken::class, 'user_id');
     }
 }

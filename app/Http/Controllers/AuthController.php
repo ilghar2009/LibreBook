@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Token;
+use App\Models\RefreshToken;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -69,7 +69,7 @@ class AuthController extends Controller
         // create token and send;
             $token = Str::random(70);
 
-            Token::create([
+            RefreshToken::create([
                 'token' => Hash::make($token),
                 'user_id' => $user->user_id,
             ]);

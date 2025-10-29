@@ -16,7 +16,7 @@ class AdminCheck
     public function handle(Request $request, Closure $next): Response
     {
         $token_c = $request->bearerToken();
-        $token = \App\Models\Token::where('token', $token_c)->first();
+        $token = \App\Models\RefreshToken::where('token', $token_c)->first();
 
         if(!$token)
             return response()->json([

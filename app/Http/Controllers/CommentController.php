@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
-use App\Models\Token;
+use App\Models\RefreshToken;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -23,7 +23,7 @@ class CommentController extends Controller
     {
         //check token
             $token_code = $request->bearerToken();
-            $token = Token::where('token', $token_code)->first();
+            $token = RefreshToken::where('token', $token_code)->first();
 
             $user = $token->user;
 
@@ -63,7 +63,7 @@ class CommentController extends Controller
     {
         //get token
             $token_code = $request->bearerToken();
-            $token = Token::where('token', $token_code)->first();
+            $token = RefreshToken::where('token', $token_code)->first();
 
             $user = $token->user;
 
@@ -99,7 +99,7 @@ class CommentController extends Controller
     {
         //get token
             $token_code = $request->bearerToken();
-            $token = Token::where('token', $token_code)->first();
+            $token = RefreshToken::where('token', $token_code)->first();
 
             $user = $token->user;
 
